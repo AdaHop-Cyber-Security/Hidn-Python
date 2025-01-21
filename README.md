@@ -42,4 +42,3 @@ Important Notes:
     Security: Relying solely on string encryption and code obfuscation is never a complete security solution. Always use proper security and encryption practices for sensitive data.
     Cross-Platform: The anti_debug_check function is basic and primarily relevant on Windows. On other systems, it typically does nothing.
 
-With this script, you have a more comprehensive, layered approach to obfuscating your Python scripts. Keep in mind that determined reverse-engineers can still work through these layers if they are motivated, but it certainly raises the complexity of analyzing your code.
