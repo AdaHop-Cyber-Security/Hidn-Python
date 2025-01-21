@@ -1,59 +1,45 @@
 # Hidn-Python
 
-Python script that includes both encryption and decryption functionalities. This version allows you to obfuscate and deobfuscate a Python script by encrypting and decrypting strings within the code
-DO NOT UPLOAD TO VIRUSTOTAL.COM OR EQUIVALENT!
+How to Use
 
----
+    Install Requirements (if any):
+        None strictly needed beyond standard Python libraries.
 
-Usage:
+    Run Obfuscation:
 
-1. Obfuscating a Script
+python advanced_obfuscator.py obfuscate path/to/script.py path/to/obf_script.py "MySecretKey" [--layer2] [--base64] [--rename-vars] [--inject-junk]
 
-To obfuscate a Python script, run the following command:
-python obfuscator.py obfuscate input.py obfuscated.py my_secret_key
+Example:
 
----    
+python advanced_obfuscator.py obfuscate script.py script_obf.py MyKey --layer2 --base64 --rename-vars --inject-junk
 
-2. Deobfuscating a Script
+This will:
 
-To deobfuscate an obfuscated script, run:
+    XOR-encrypt all string literals.
+    Add a second XOR pass (--layer2).
+    Base64-encode after XOR (--base64).
+    Naively rename variables (--rename-vars).
+    Inject junk lines after every 5 lines (--inject-junk).
 
-python obfuscator.py deobfuscate obfuscated.py decrypted.py my_secret_key
+Run Deobfuscation:
 
----
+python advanced_obfuscator.py deobfuscate path/to/obf_script.py path/to/deobf_script.py "MySecretKey" [--layer2] [--base64]
 
-Explanation of the Changes
+Example:
 
-    Encryption and Decryption:
-        Added string_decrypt() function to reverse the encryption process.
-        Base64 and XOR encryption used for string protection.
+    python advanced_obfuscator.py deobfuscate script_obf.py script_deobf.py MyKey --layer2 --base64
 
-    Command-line Arguments:
-        The script can now take input/output file paths and encryption keys as command-line arguments.
-        User can specify whether they want to obfuscate or deobfuscate.
+    Must use the same options (--layer2, --base64) and key you used during obfuscation to properly restore the original strings.
 
-    Anti-Debugging Check:
-        Added a function that exits the script if it detects debugging.
+    Check the Output
+        The obfuscated file (script_obf.py) will be significantly different and harder to read.
+        The deobfuscated file (script_deobf.py) should resemble the original code’s functionality, with the encrypted strings restored.
 
-    File Handling:
-        Reads the script content from the specified input file and writes to the output file.
+Important Notes:
 
----        
+    Variable Renaming: The included renaming logic is very naive and can break your code if it inadvertently renames parts of strings or function names. A robust solution would parse the code’s Abstract Syntax Tree (AST).
+    Junk Code Injection: This example only shows a trivial demonstration. Real junk code insertion would likely require deeper code analysis to avoid breaking functionality.
+    Security: Relying solely on string encryption and code obfuscation is never a complete security solution. Always use proper security and encryption practices for sensitive data.
+    Cross-Platform: The anti_debug_check function is basic and primarily relevant on Windows. On other systems, it typically does nothing.
 
-Sample Input Python Script (input.py)
-
-print("Hello, world!")
-name = "John Doe"
-age = 30
-print(f"Name: {name}, Age: {age}")
-
-Obfuscated Output (obfuscated.py)
-
-print("U1RGQkdGSA==")
-name = "UldXWkZJQQ=="
-age = 30
-print(f"Name: {name}, Age: {age}")
-
-Decrypted Output (decrypted.py)
-
-
+With this script, you have a more comprehensive, layered approach to obfuscating your Python scripts. Keep in mind that determined reverse-engineers can still work through these layers if they are motivated, but it certainly raises the complexity of analyzing your code.
